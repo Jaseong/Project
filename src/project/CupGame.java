@@ -2,7 +2,6 @@ package project;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,7 +24,7 @@ public class CupGame extends GameContainer {
 	static Timer timer;
 
 	static int startBtn;
-	
+
 	static int click0 = 0;
 	static int click1 = 0;
 	static int click2 = 0;
@@ -133,18 +132,12 @@ public class CupGame extends GameContainer {
 					i--;
 
 				} else if (i == 0) {
-					
+
 					timer.cancel();
-					
+
 					balls[1].setVisible(false); // 컵이 내려간 후 공 지우기
-					
-					int j = 0;
-					while ( j < 5) {
-						changeCup(); // 컵 섞기
-						j++;
-					}
-					
-					System.out.println(cups[1].getX());
+
+					changeCup();
 				}
 
 			}
@@ -162,9 +155,9 @@ public class CupGame extends GameContainer {
 			int i = 3;
 
 			public void run() {
-				
+
 				// 들어오는 인덱스에 따른 컵 올리기
-				if (index == 0) { 
+				if (index == 0) {
 					cups[0].y -= 25;
 					cups[0].setBounds(cups[0].x, cups[0].y, cups[0].w, cups[0].h);
 				}
@@ -188,15 +181,15 @@ public class CupGame extends GameContainer {
 					if (index == 0) {
 						click0++;
 					}
-					
+
 					// 1번 컵의 x 위치에 맞는 공 보여주기
 					else if (index == 1) {
 						click1++;
-						if (cups[1].getX() == 230) {
+						if (cups[1].getX() < 233 && cups[1].getX() > 225) {
 							balls[0].setVisible(true);
-						} else if (cups[1].getX() == 430) {
+						} else if (cups[1].getX() < 433 && cups[1].getX() > 425 ) {
 							balls[1].setVisible(true);
-						} else if (cups[1].getX() == 630) {
+						} else if (cups[1].getX() < 633 && cups[1].getX() > 625 ) {
 							balls[2].setVisible(true);
 						}
 					}
@@ -211,28 +204,18 @@ public class CupGame extends GameContainer {
 
 	// 컵 섞기
 	public void changeCup() {
-
-		int temp = 0; 
-		Random r = new Random();
-
-		int fIndex = r.nextInt(3); // 첫번째 인덱스
-		int sIndex = 0; // 두번째 인덱스
-
-		// 중복 제거를 위한 for문
-		for (int i = 0; i < 1; i++) {
-			sIndex = r.nextInt(3);
-			if (fIndex == sIndex) {
-				i--;
-				continue;
-			}
-		}
 		
-		temp = cups[fIndex].x;
-		cups[fIndex].x = cups[sIndex].x;
-		cups[sIndex].x = temp;
+		int r = 100;
 		
-		cups[fIndex].setBounds(cups[fIndex].x, cups[fIndex].y, cups[fIndex].w, cups[fIndex].h);
-		cups[sIndex].setBounds(cups[sIndex].x, cups[sIndex].y, cups[sIndex].w, cups[sIndex].h);
+		CupRoad cr = new CupRoad();
+		
+		cups[0].road = cr.cupRoadArr[0];
+		cups[1].road = cr.cupRoadArr[1];
+		cups[2].road = cr.cupRoadArr[2];
+		
+		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r);
+		
+		ct.start();
 	}
 
 	@Override
@@ -240,7 +223,7 @@ public class CupGame extends GameContainer {
 
 		JButton btn = (JButton) e.getSource();
 
-		if (cups[0].equals(btn)) {
+		if (cups[0]==btn) {
 			if (click0 == 1) {
 				return;
 			}
@@ -256,7 +239,6 @@ public class CupGame extends GameContainer {
 			}
 			cupUp(2);
 		}
-
 	}
 
 }
