@@ -36,6 +36,9 @@ public class CupRoad {
 		for(int i = 0; i < cupRoadArr.length; i++) {
 			System.out.print("cup["+ i + "] : ");
 			for(int j = 0; j < cupRoadArr[i].length; j++) {
+				if( j == 9) {
+					break;
+				}
 				System.out.print(cupRoadArr[i][j] + " ");
 			}
 			System.out.println();

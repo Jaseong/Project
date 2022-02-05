@@ -185,11 +185,11 @@ public class CupGame extends GameContainer {
 					// 1번 컵의 x 위치에 맞는 공 보여주기
 					else if (index == 1) {
 						click1++;
-						if (cups[1].getX() < 233 && cups[1].getX() > 225) {
+						if (cups[1].getX()==230) {
 							balls[0].setVisible(true);
-						} else if (cups[1].getX() < 433 && cups[1].getX() > 425 ) {
+						} else if (cups[1].getX()==430 ) {
 							balls[1].setVisible(true);
-						} else if (cups[1].getX() < 633 && cups[1].getX() > 625 ) {
+						} else if (cups[1].getX()==630 ) {
 							balls[2].setVisible(true);
 						}
 					}

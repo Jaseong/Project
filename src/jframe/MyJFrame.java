@@ -5,7 +5,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 
 import project.CardGame;
-//import project.CupGame;
+import project.CupGame;
 
 public class MyJFrame extends JFrame {
 	
@@ -20,7 +20,7 @@ public class MyJFrame extends JFrame {
 		contentPan = getContentPane();
 		
 //		contentPan.add(new CardGame());
-//		contentPan.add(new CupGame());
+		contentPan.add(new CupGame());
 		
 		
 	}

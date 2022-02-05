@@ -38,26 +38,12 @@ public class CupThread extends Thread {
 
 		while (true) {
 
-			if (i < 180) {
-				if (d1 != 0) {
-					cup1.x = (cup1x + d1 * r) - (int) (d1 * r * Math.cos(i * Math.PI / 180));
-					cup1.y = (y - (int) (d1 * r * Math.sin(i * Math.PI / 180)));
-				} else {
-					cup1.y = (y - (int) (r * Math.sin(i * Math.PI / 180)));
-				}
-				if (d2 != 0) {
-					cup2.x = (cup2x + d2 * r) - (int) (d2 * r * Math.cos(i * Math.PI / 180));
-					cup2.y = (y - (int) (d2 * r * Math.sin(i * Math.PI / 180)));
-				} else {
-					cup2.y = (y - (int) (r * Math.sin(i * Math.PI / 180)));
-				}
-				if (d3 != 0) {
-					cup3.x = (cup3x + d3 * r) - (int) (d3 * r * Math.cos(i * Math.PI / 180));
-					cup3.y = (y - (int) (d3 * r * Math.sin(i * Math.PI / 180)));
-				} else {
-					cup3.y = (y - (int) (r * Math.sin(i * Math.PI / 180)));
-				}
-
+			if (i < 181) {
+				
+				road(cup1, d1, cup1x, i);
+				road(cup2, d2, cup2x, i);
+				road(cup3, d3, cup3x, i);
+				
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
@@ -74,9 +60,9 @@ public class CupThread extends Thread {
 				System.out.println(cup2.x);
 				break;
 			}
-			if (i < 180) {
+			if (i < 181) {
 				i++;
-			} else if (i == 180) {
+			} else if (i == 181) {
 				roop++;
 				
 				cup1x = cup1.x;
@@ -98,6 +84,17 @@ public class CupThread extends Thread {
 				
 				i = 0;
 			}
+		} // end of while
+	} // end of run
+	
+	public void road(Cup cup, int d, int x, int i ) {
+		if (d != 0) {
+			cup.x = (x + d * r) - (int) (d * r * Math.cos(Math.toRadians(i)));
+			cup.y = (300 - (int) (d * r * Math.sin(Math.toRadians(i))));
+		} else {
+			cup.y = (300 - (int) (r * Math.sin(Math.toRadians(i))));
 		}
 	}
+	
+	
 }
