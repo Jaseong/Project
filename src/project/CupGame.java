@@ -28,12 +28,11 @@ public class CupGame extends GameContainer {
 	static JButton playBtn;
 
 	static Timer timer;
+	static javax.swing.Timer otherCupTtimer;
 
 	static int startBtn;
 
-	static int click0 = 0;
-	static int click1 = 0;
-	static int click2 = 0;
+	static int click = 0;
 
 	static boolean flag;
 
@@ -200,11 +199,13 @@ public class CupGame extends GameContainer {
 				else if (index == 1) {
 					cups[1].y -= 25;
 					cups[1].setBounds(cups[1].x, cups[1].y, cups[0].w, cups[0].h);
+
 				}
 
 				else if (index == 2) {
 					cups[2].y -= 25;
 					cups[2].setBounds(cups[2].x, cups[2].y, cups[0].w, cups[0].h);
+
 				}
 
 				i--;
@@ -214,12 +215,12 @@ public class CupGame extends GameContainer {
 					timer.cancel();
 
 					if (index == 0) {
-						click0++;
+						click++;
 					}
 
 					// 1번 컵의 x 위치에 맞는 공 보여주기
 					else if (index == 1) {
-						click1++;
+						click++;
 						if (cups[1].getX() == 230) {
 							balls[0].setVisible(true);
 						} else if (cups[1].getX() == 430) {
@@ -230,11 +231,44 @@ public class CupGame extends GameContainer {
 					}
 
 					else if (index == 2) {
-						click2++;
+						click++;
 					}
+
 				}
 			}
 		}, 0, 50);
+	}
+
+	//
+	public void otherCupUp(int index1, int index2) {
+		otherCupTtimer = new javax.swing.Timer(50, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (index1 == 1) {
+					if (cups[1].getX() == 230) {
+						balls[0].setVisible(true);
+					} else if (cups[1].getX() == 430) {
+						balls[1].setVisible(true);
+					} else if (cups[1].getX() == 630) {
+						balls[2].setVisible(true);
+					}
+				}
+
+				cups[index1].y -= 25;
+				cups[index1].setBounds(cups[index1].x, cups[index1].y, cups[index1].w, cups[index1].h);
+
+				cups[index2].y -= 25;
+				cups[index2].setBounds(cups[index2].x, cups[index2].y, cups[index2].w, cups[index2].h);
+
+				if (cups[index1].y == 200) {
+					otherCupTtimer.stop();
+				}
+
+			}
+		});
+		otherCupTtimer.start();
 	}
 
 	// 컵 섞기
@@ -253,39 +287,40 @@ public class CupGame extends GameContainer {
 		ct.start();
 	}
 
-	
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		JButton btn = (JButton) e.getSource();
 
 		if (cups[0] == btn) {
-			if (click0 == 1) {
+			if (click == 1) {
 				return;
 			}
 			cupUp(0);
-			if(flag == true) {
+			otherCupUp(1, 2);
+			if (flag == true) {
 				return;
 			}
 			flag = true;
 			xLabel.setVisible(flag);
 		} else if (cups[1].equals(btn)) {
-			if (click1 == 1) {
+			if (click == 1) {
 				return;
 			}
 			cupUp(1);
-			if(flag == true) {
+			otherCupUp(0, 2);
+			if (flag == true) {
 				return;
 			}
 			flag = true;
 			checkLabel.setVisible(flag);
 		} else if (cups[2].equals(btn)) {
-			if (click2 == 1) {
+			if (click == 1) {
 				return;
 			}
 			cupUp(2);
-			if(flag == true) {
+			otherCupUp(1, 0);
+			if (flag == true) {
 				return;
 			}
 			flag = true;
