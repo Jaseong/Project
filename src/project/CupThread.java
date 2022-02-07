@@ -1,16 +1,20 @@
 package project;
 
+import javax.swing.JLabel;
+
 public class CupThread extends Thread {
 	Cup cup1;
 	Cup cup2;
 	Cup cup3;
 	int r;
+	JLabel manualJLabel;
 
-	public CupThread(Cup cup1, Cup cup2, Cup cup3, int r) {
+	public CupThread(Cup cup1, Cup cup2, Cup cup3, int r,JLabel manualJLabel) {
 		this.cup1 = cup1;
 		this.cup2 = cup2;
 		this.cup3 = cup3;
 		this.r = r;
+		this.manualJLabel = manualJLabel;
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class CupThread extends Thread {
 
 			if (roop == 8) {
 				System.out.println(cup2.x);
+				manualJLabel.setVisible(true);
 				break;
 			}
 			if (i < 181) {

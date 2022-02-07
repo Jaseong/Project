@@ -1,5 +1,7 @@
 package project;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
@@ -18,11 +20,13 @@ public class CupGame extends GameContainer {
 	static ImageIcon checkIcon = new ImageIcon("images/checked.png");
 	static ImageIcon pauseIcon = new ImageIcon("images/pause.png");
 	static ImageIcon xIcon = new ImageIcon("images/x.png");
+	static ImageIcon cupBorderIcon = new ImageIcon("images/cup_stroke.png");
 
 	static JLabel backLabel;
 	static JLabel gameBackLabel;
 	static JLabel checkLabel;
 	static JLabel xLabel;
+	static JLabel manualLabel;
 
 	static JButton pauseBtn;
 	static JButton playBtn;
@@ -50,14 +54,19 @@ public class CupGame extends GameContainer {
 		this.setLayout(null);
 		this.setBounds(0, 0, 1024, 768);
 
+		manualLabel = new JLabel("공이 들어있는 컵을 선택하세요");
+		manualLabel.setBounds(230, 150, 550, 50);
+		manualLabel.setHorizontalAlignment(JLabel.CENTER);
+		manualLabel.setFont(new Font("맑은고딕", Font.BOLD, 25));
+
 		// 엑스 이미지
 		xLabel = new JLabel(xIcon);
-		xLabel.setBounds(680, 20, 150, 150);
+		xLabel.setBounds(750, 20, 150, 150);
 		xLabel.setVisible(false);
 
 		// 체크 이미지
 		checkLabel = new JLabel(checkIcon);
-		checkLabel.setBounds(680, 20, 150, 150);
+		checkLabel.setBounds(750, 20, 150, 150);
 		checkLabel.setVisible(false);
 
 		// 일시정지 버튼
@@ -75,8 +84,10 @@ public class CupGame extends GameContainer {
 		});
 
 		// 시작하기 버튼
-		playBtn = new JButton("시작하기");
-		playBtn.setBounds(435, 530, 150, 50);
+		playBtn = new RoundJButton("시작하기");
+		playBtn.setBounds(430, 480, 150, 50);
+		playBtn.setBackground(Color.ORANGE);
+		playBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
 		playBtn.addActionListener(new ActionListener() {
 
 			@Override
@@ -85,6 +96,8 @@ public class CupGame extends GameContainer {
 					return;
 				}
 
+				playBtn.setVisible(false);
+				manualLabel.setVisible(false);
 				cupUpDown();
 
 				startBtn++;
@@ -94,7 +107,11 @@ public class CupGame extends GameContainer {
 		// 컵 생성
 		for (int i = 0; i < cups.length; i++) {
 			cups[i] = new Cup();
+			cups[i].setIcon(cupIcon);
 			cups[i].addActionListener(this);
+			cups[i].setBackground(Color.white);
+			cups[i].setBorder(null);
+
 			this.add(cups[i]);
 		}
 
@@ -129,6 +146,7 @@ public class CupGame extends GameContainer {
 		backLabel = new JLabel(backIcon);
 		backLabel.setBounds(0, 0, 1024, 768);
 
+		this.add(manualLabel);
 		this.add(checkLabel);
 		this.add(xLabel);
 		this.add(pauseBtn);
@@ -199,13 +217,11 @@ public class CupGame extends GameContainer {
 				else if (index == 1) {
 					cups[1].y -= 25;
 					cups[1].setBounds(cups[1].x, cups[1].y, cups[0].w, cups[0].h);
-
 				}
 
 				else if (index == 2) {
 					cups[2].y -= 25;
 					cups[2].setBounds(cups[2].x, cups[2].y, cups[0].w, cups[0].h);
-
 				}
 
 				i--;
@@ -282,9 +298,15 @@ public class CupGame extends GameContainer {
 		cups[1].road = cr.cupRoadArr[1];
 		cups[2].road = cr.cupRoadArr[2];
 
-		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r);
+		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r, manualLabel);
 
 		ct.start();
+	}
+
+	public void labelBorder(boolean flag, JLabel JLabel, JButton JButton) {
+		flag = true;
+		JLabel.setVisible(flag);
+		JButton.setIcon(cupBorderIcon);
 	}
 
 	@Override
@@ -297,34 +319,22 @@ public class CupGame extends GameContainer {
 				return;
 			}
 			cupUp(0);
+			labelBorder(flag, xLabel, cups[0]);
 			otherCupUp(1, 2);
-			if (flag == true) {
-				return;
-			}
-			flag = true;
-			xLabel.setVisible(flag);
 		} else if (cups[1].equals(btn)) {
 			if (click == 1) {
 				return;
 			}
 			cupUp(1);
+			labelBorder(flag, checkLabel, cups[1]);
 			otherCupUp(0, 2);
-			if (flag == true) {
-				return;
-			}
-			flag = true;
-			checkLabel.setVisible(flag);
 		} else if (cups[2].equals(btn)) {
 			if (click == 1) {
 				return;
 			}
 			cupUp(2);
+			labelBorder(flag, xLabel, cups[2]);
 			otherCupUp(1, 0);
-			if (flag == true) {
-				return;
-			}
-			flag = true;
-			xLabel.setVisible(flag);
 		}
 	}
 
