@@ -1,5 +1,6 @@
 package project;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class CupThread extends Thread {
@@ -8,13 +9,18 @@ public class CupThread extends Thread {
 	Cup cup3;
 	int r;
 	JLabel manualJLabel;
+	JButton[] JButton = new JButton[3];
+	
 
-	public CupThread(Cup cup1, Cup cup2, Cup cup3, int r,JLabel manualJLabel) {
+	public CupThread(Cup cup1, Cup cup2, Cup cup3, int r,JLabel manualJLabel, JButton[] JButton) {
 		this.cup1 = cup1;
 		this.cup2 = cup2;
 		this.cup3 = cup3;
 		this.r = r;
 		this.manualJLabel = manualJLabel;
+		this.JButton = JButton;
+		
+		
 	}
 
 	@Override
@@ -61,6 +67,9 @@ public class CupThread extends Thread {
 			}
 
 			if (roop == 8) {
+				for(int j = 0; j < JButton.length; j++) {
+					JButton[j].setEnabled(true);
+				}
 				System.out.println(cup2.x);
 				manualJLabel.setVisible(true);
 				break;

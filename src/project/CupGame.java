@@ -20,6 +20,7 @@ public class CupGame extends GameContainer {
 	static ImageIcon checkIcon = new ImageIcon("images/checked.png");
 	static ImageIcon pauseIcon = new ImageIcon("images/pause.png");
 	static ImageIcon xIcon = new ImageIcon("images/x.png");
+	
 	static ImageIcon cupBorderIcon = new ImageIcon("images/cup_stroke.png");
 
 	static JLabel backLabel;
@@ -45,6 +46,25 @@ public class CupGame extends GameContainer {
 	static Cup[] cups = new Cup[3];
 
 	public CupGame() {
+		
+		for (int i = 0; i < cups.length; i++) {
+			cups[i] = new Cup();
+			cups[i].setIcon(cupIcon);
+			cups[i].setDisabledIcon(cupIcon);
+			cups[i].setEnabled(false);
+			cups[i].addActionListener(this);
+			cups[i].setBackground(Color.white);
+			cups[i].setFocusPainted(false);
+			cups[i].setBorder(null);
+
+			this.add(cups[i]);
+		}
+		
+		playBtn = new RoundJButton("시작하기");
+		pauseBtn = new JButton(pauseIcon);
+		playBtn.addActionListener(this);
+		pauseBtn.addActionListener(this);
+		
 		gamePlay();
 	}
 
@@ -70,50 +90,14 @@ public class CupGame extends GameContainer {
 		checkLabel.setVisible(false);
 
 		// 일시정지 버튼
-		pauseBtn = new JButton(pauseIcon);
 		pauseBtn.setBounds(920, 30, 50, 50);
 		pauseBtn.setBorderPainted(false);
 		pauseBtn.setContentAreaFilled(false);
 
-		pauseBtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
-
 		// 시작하기 버튼
-		playBtn = new RoundJButton("시작하기");
 		playBtn.setBounds(430, 480, 150, 50);
 		playBtn.setBackground(Color.ORANGE);
 		playBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
-		playBtn.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (startBtn == 1) {
-					return;
-				}
-
-				playBtn.setVisible(false);
-				manualLabel.setVisible(false);
-				cupUpDown();
-
-				startBtn++;
-			}
-		});
-
-		// 컵 생성
-		for (int i = 0; i < cups.length; i++) {
-			cups[i] = new Cup();
-			cups[i].setIcon(cupIcon);
-			cups[i].addActionListener(this);
-			cups[i].setBackground(Color.white);
-			cups[i].setBorder(null);
-
-			this.add(cups[i]);
-		}
 
 		cups[0].x = 230;
 		cups[1].x = 430;
@@ -298,7 +282,7 @@ public class CupGame extends GameContainer {
 		cups[1].road = cr.cupRoadArr[1];
 		cups[2].road = cr.cupRoadArr[2];
 
-		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r, manualLabel);
+		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r, manualLabel, cups);
 
 		ct.start();
 	}
@@ -335,6 +319,24 @@ public class CupGame extends GameContainer {
 			cupUp(2);
 			labelBorder(flag, xLabel, cups[2]);
 			otherCupUp(1, 0);
+			
+		} else if (playBtn.equals(btn)) {
+			if (startBtn == 1) {
+				return;
+			}
+
+			for (int i = 0; i < cups.length; i++) {
+				cups[i].setEnabled(true);
+			}
+			
+			playBtn.setVisible(false);
+			manualLabel.setVisible(false);
+			cupUpDown();
+
+			startBtn++;
+			
+		} else if (pauseBtn.equals(btn)) {
+			
 		}
 	}
 
