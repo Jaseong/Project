@@ -47,19 +47,6 @@ public class CupGame extends GameContainer {
 
 	public CupGame() {
 		
-		for (int i = 0; i < cups.length; i++) {
-			cups[i] = new Cup();
-			cups[i].setIcon(cupIcon);
-			cups[i].setDisabledIcon(cupIcon);
-			cups[i].setEnabled(false);
-			cups[i].addActionListener(this);
-			cups[i].setBackground(Color.white);
-			cups[i].setFocusPainted(false);
-			cups[i].setBorder(null);
-
-			this.add(cups[i]);
-		}
-		
 		playBtn = new RoundJButton("시작하기");
 		pauseBtn = new JButton(pauseIcon);
 		playBtn.addActionListener(this);
@@ -74,6 +61,7 @@ public class CupGame extends GameContainer {
 		this.setLayout(null);
 		this.setBounds(0, 0, 1024, 768);
 
+		// 설명 텍스트
 		manualLabel = new JLabel("공이 들어있는 컵을 선택하세요");
 		manualLabel.setBounds(230, 150, 550, 50);
 		manualLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -98,6 +86,23 @@ public class CupGame extends GameContainer {
 		playBtn.setBounds(430, 480, 150, 50);
 		playBtn.setBackground(Color.ORANGE);
 		playBtn.setFont(new Font("맑은고딕", Font.BOLD, 20));
+		
+		// 초록 배경
+		backLabel = new JLabel(backIcon);
+		backLabel.setBounds(0, 0, 1024, 768);
+		
+		for (int i = 0; i < cups.length; i++) {
+			cups[i] = new Cup();
+			cups[i].setIcon(cupIcon);
+			cups[i].setDisabledIcon(cupIcon);
+			cups[i].setEnabled(false);
+			cups[i].addActionListener(this);
+			cups[i].setBackground(Color.white);
+			cups[i].setFocusPainted(false);
+			cups[i].setBorder(null);
+
+			backLabel.add(cups[i]);
+		}
 
 		cups[0].x = 230;
 		cups[1].x = 430;
@@ -111,7 +116,7 @@ public class CupGame extends GameContainer {
 		// 공 생성
 		for (int i = 0; i < balls.length; i++) {
 			balls[i] = new JLabel(ballIcon);
-			this.add(balls[i]);
+			backLabel.add(balls[i]);
 			if (!(i == 1)) {
 				balls[i].setVisible(false);
 			}
@@ -126,16 +131,13 @@ public class CupGame extends GameContainer {
 		gameBackLabel = new JLabel(gameBagIcon);
 		gameBackLabel.setBounds(50, 20, 900, 700);
 
-		// 초록 배경
-		backLabel = new JLabel(backIcon);
-		backLabel.setBounds(0, 0, 1024, 768);
-
-		this.add(manualLabel);
-		this.add(checkLabel);
-		this.add(xLabel);
-		this.add(pauseBtn);
-		this.add(playBtn);
-		this.add(gameBackLabel);
+		backLabel.add(manualLabel);
+		backLabel.add(checkLabel);
+		backLabel.add(xLabel);
+		backLabel.add(pauseBtn);
+		backLabel.add(playBtn);
+		backLabel.add(gameBackLabel);
+		
 		this.add(backLabel);
 	}
 

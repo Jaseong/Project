@@ -57,20 +57,6 @@ public class CardGame extends GameContainer {
 
 	public CardGame() {
 
-		cardBack = new JPanel(new GridLayout(4, 3));
-
-		for (int i = 0; i < 12; i++) {
-			Btn[i] = new JButton();
-			Btn[i].setPreferredSize(new Dimension(100, 150));
-			Btn[i].setBorder(eb);
-			Btn[i].setBackground(Color.white);
-			Btn[i].setFocusPainted(false);
-			Btn[i].addActionListener(this);
-			Btn[i].setIcon(chageImage("leaf.png"));
-			Btn[i].setEnabled(false);
-			cardBack.add(Btn[i]);
-		}
-
 		pauseBtn = new JButton(pauseIcon);
 		bottomBtn01 = new RoundJButton("시작하기");
 
@@ -176,8 +162,21 @@ public class CardGame extends GameContainer {
 		bottomBtn01.setFont(new Font("맑은 고딕", Font.BOLD, 20));
 		bottomBtn01.setBounds(435, 630, 150, 40);
 
+		cardBack = new JPanel(new GridLayout(4, 3));
 		cardBack.setBounds(251, 170, 505, 450);
 		cardBack.setBackground(Color.white);
+		
+		for (int i = 0; i < 12; i++) {
+			Btn[i] = new JButton();
+			Btn[i].setPreferredSize(new Dimension(100, 150));
+			Btn[i].setBorder(eb);
+			Btn[i].setBackground(Color.white);
+			Btn[i].setFocusPainted(false);
+			Btn[i].addActionListener(this);
+			Btn[i].setIcon(chageImage("leaf.png"));
+			Btn[i].setEnabled(false);
+			cardBack.add(Btn[i]);
+		}
 
 		Title = new JLabel("Card Game");
 		Title.setLayout(null);
@@ -195,26 +194,24 @@ public class CardGame extends GameContainer {
 		back.setBounds(0, 0, 1024, 768);
 
 		this.setLayout(null);
-		this.setBackground(Color.black);
 		this.setBounds(0, 0, 1024, 768);
+		
+		back.add(bottomBtn01);
+		back.add(xLabel);
+		back.add(checkLabel);
+		back.add(pauseBtn);
+		back.add(startCardBack);
+		back.add(cardBack);
+		back.add(Title);
+		back.add(gameBack);
 
-		this.add(bottomBtn01);
-
-		this.add(xLabel);
-		this.add(checkLabel);
-		this.add(pauseBtn);
-		this.add(startCardBack);
-		this.add(cardBack);
-		this.add(Title);
-
-		this.add(gameBack);
 		this.add(back);
 	}
 
 	// 그림 맞추기 실패시 카드 되돌리기
 	public void backToQuestion() {
 
-		timer = new Timer(2000, new ActionListener() {
+		timer = new Timer(500, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -262,7 +259,6 @@ public class CardGame extends GameContainer {
 
 		JButton btn = (JButton) e.getSource();
 		
-
 		if (pauseBtn.equals(btn)) { // 정지 버튼
 
 		} else if (bottomBtn01.equals(btn)) { // 시작하기 버튼
@@ -281,7 +277,7 @@ public class CardGame extends GameContainer {
 
 			startCount++;
 			
-		} else {
+		} else { // 그림 버튼
 			
 			if (openCount == 2) {
 				return;
@@ -293,7 +289,6 @@ public class CardGame extends GameContainer {
 			
 			openCount++;
 			
-			System.out.println(openCount);
 			if (openCount == 1) {
 				buttonIndexSave1 = index;
 				
@@ -329,12 +324,13 @@ public class CardGame extends GameContainer {
 						JOptionPane.showMessageDialog(CardGame.this, "수고하셨습니다.");
 						for (int i = 0; i < 12; i++) {
 							Btn[i].setEnabled(false);
-						}
+						} 
 					}
 					backToQuestion();
 				}
-			}
-		}
+			} 
+			
+		} // 그림 버튼 끝
 
 	} // end of actionPerformed
 }
