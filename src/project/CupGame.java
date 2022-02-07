@@ -15,10 +15,16 @@ public class CupGame extends GameContainer {
 	static ImageIcon gameBagIcon = new ImageIcon("images/cupgamebackImg.png");
 	static ImageIcon cupIcon = new ImageIcon("images/cup.png");
 	static ImageIcon ballIcon = new ImageIcon("images/ball.png");
+	static ImageIcon checkIcon = new ImageIcon("images/checked.png");
+	static ImageIcon pauseIcon = new ImageIcon("images/pause.png");
+	static ImageIcon xIcon = new ImageIcon("images/x.png");
 
 	static JLabel backLabel;
 	static JLabel gameBackLabel;
+	static JLabel checkLabel;
+	static JLabel xLabel;
 
+	static JButton pauseBtn;
 	static JButton playBtn;
 
 	static Timer timer;
@@ -28,6 +34,8 @@ public class CupGame extends GameContainer {
 	static int click0 = 0;
 	static int click1 = 0;
 	static int click2 = 0;
+
+	static boolean flag;
 
 	static JLabel[] balls = new JLabel[3];
 
@@ -42,6 +50,30 @@ public class CupGame extends GameContainer {
 
 		this.setLayout(null);
 		this.setBounds(0, 0, 1024, 768);
+
+		// 엑스 이미지
+		xLabel = new JLabel(xIcon);
+		xLabel.setBounds(680, 20, 150, 150);
+		xLabel.setVisible(false);
+
+		// 체크 이미지
+		checkLabel = new JLabel(checkIcon);
+		checkLabel.setBounds(680, 20, 150, 150);
+		checkLabel.setVisible(false);
+
+		// 일시정지 버튼
+		pauseBtn = new JButton(pauseIcon);
+		pauseBtn.setBounds(920, 30, 50, 50);
+		pauseBtn.setBorderPainted(false);
+		pauseBtn.setContentAreaFilled(false);
+
+		pauseBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
 
 		// 시작하기 버튼
 		playBtn = new JButton("시작하기");
@@ -98,6 +130,9 @@ public class CupGame extends GameContainer {
 		backLabel = new JLabel(backIcon);
 		backLabel.setBounds(0, 0, 1024, 768);
 
+		this.add(checkLabel);
+		this.add(xLabel);
+		this.add(pauseBtn);
 		this.add(playBtn);
 		this.add(gameBackLabel);
 		this.add(backLabel);
@@ -185,11 +220,11 @@ public class CupGame extends GameContainer {
 					// 1번 컵의 x 위치에 맞는 공 보여주기
 					else if (index == 1) {
 						click1++;
-						if (cups[1].getX()==230) {
+						if (cups[1].getX() == 230) {
 							balls[0].setVisible(true);
-						} else if (cups[1].getX()==430 ) {
+						} else if (cups[1].getX() == 430) {
 							balls[1].setVisible(true);
-						} else if (cups[1].getX()==630 ) {
+						} else if (cups[1].getX() == 630) {
 							balls[2].setVisible(true);
 						}
 					}
@@ -204,40 +239,57 @@ public class CupGame extends GameContainer {
 
 	// 컵 섞기
 	public void changeCup() {
-		
+
 		int r = 100;
-		
+
 		CupRoad cr = new CupRoad();
-		
+
 		cups[0].road = cr.cupRoadArr[0];
 		cups[1].road = cr.cupRoadArr[1];
 		cups[2].road = cr.cupRoadArr[2];
-		
+
 		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r);
-		
+
 		ct.start();
 	}
+
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
 		JButton btn = (JButton) e.getSource();
 
-		if (cups[0]==btn) {
+		if (cups[0] == btn) {
 			if (click0 == 1) {
 				return;
 			}
 			cupUp(0);
+			if(flag == true) {
+				return;
+			}
+			flag = true;
+			xLabel.setVisible(flag);
 		} else if (cups[1].equals(btn)) {
 			if (click1 == 1) {
 				return;
 			}
 			cupUp(1);
+			if(flag == true) {
+				return;
+			}
+			flag = true;
+			checkLabel.setVisible(flag);
 		} else if (cups[2].equals(btn)) {
 			if (click2 == 1) {
 				return;
 			}
 			cupUp(2);
+			if(flag == true) {
+				return;
+			}
+			flag = true;
+			xLabel.setVisible(flag);
 		}
 	}
 

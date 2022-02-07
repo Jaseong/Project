@@ -19,8 +19,8 @@ public class MyJFrame extends JFrame {
 		
 		contentPan = getContentPane();
 		
-//		contentPan.add(new CardGame());
-		contentPan.add(new CupGame());
+		contentPan.add(new CardGame());
+//		contentPan.add(new CupGame());
 		
 		
 	}

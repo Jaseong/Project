@@ -26,6 +26,7 @@ public class CardGame extends GameContainer {
 	static ImageIcon startBackIcon = new ImageIcon("images/startback.png");
 	static ImageIcon pauseIcon = new ImageIcon("images/pause.png");
 	static ImageIcon checkIcon = new ImageIcon("images/checked.png");
+	static ImageIcon xIcon = new ImageIcon("images/x.png");
 	static JLabel Title; // 횟수 보여주기
 	static JLabel gameBack; // 흰색 배경
 	static JLabel back; // 초록 배경
@@ -34,6 +35,7 @@ public class CardGame extends GameContainer {
 	static JPanel cardBack; // 카드 넣는 패널
 	static JLabel startCardBack;
 	static JLabel checkLabel;
+	static JLabel xLabel;
 	static RoundJButton bottomBtn01; // 시작하기
 	static JButton pauseBtn;
 	static JButton[] Btn = new JButton[12]; // 카드 12개
@@ -45,7 +47,7 @@ public class CardGame extends GameContainer {
 	static int buttonIndexSave1 = 0; // 먼저 선택된 카드 인덱스 저장
 	static int buttonIndexSave2 = 0; // 두번째 선택된 카드 인덱스 저장
 	static int openCount = 0; // 카드가 2개 뒤집히면 닫히기 전까지 다음 카드 안열리게 하는 변수
-	static int tryCount = 0;
+	static int tryCount = 12;
 	static Timer timer;
 	static java.util.Timer countTimer;
 	static int startCount;
@@ -104,7 +106,7 @@ public class CardGame extends GameContainer {
 				if (i < 0) {
 					countTimer.cancel();
 
-					Title.setText("시도 횟수 : " + tryCount);
+					Title.setText("남은 횟수 : " + tryCount);
 
 				}
 			}
@@ -126,6 +128,10 @@ public class CardGame extends GameContainer {
 
 	@Override
 	public void gamePlay() {
+		
+		xLabel = new JLabel(xIcon);
+		xLabel.setBounds(680, 20, 150, 150);
+		xLabel.setVisible(false);
 		
 		checkLabel = new JLabel(checkIcon);
 		checkLabel.setBounds(680, 20, 150, 150);
@@ -174,8 +180,6 @@ public class CardGame extends GameContainer {
 					Btn[i].setEnabled(true);
 				}
 
-				Title.setText("시도 횟수 : " + tryCount);
-
 				showCardAll();
 
 				startCount++;
@@ -191,7 +195,7 @@ public class CardGame extends GameContainer {
 		Title = new JLabel("Card Game");
 		Title.setLayout(null);
 		Title.setForeground(Color.black);
-		Title.setFont(new Font("맑은 고딕", Font.BOLD, 25));
+		Title.setFont(new Font("맑은고딕", Font.BOLD, 25));
 		Title.setHorizontalAlignment(JLabel.CENTER);
 		// Title.setOpaque(true); JLabel background 컬러를 바꿀 때 사용
 		// Title.setBackground(Color.black);
@@ -226,6 +230,7 @@ public class CardGame extends GameContainer {
 
 		this.add(bottomBtn01);
 
+		this.add(xLabel);
 		this.add(checkLabel);
 		this.add(pauseBtn);
 		this.add(startCardBack);
@@ -306,9 +311,9 @@ public class CardGame extends GameContainer {
 			if (Btn[buttonIndexSave1] == Btn[buttonIndexSave2]) {
 				tryCount = tryCount;
 			} else {
-				tryCount++;
+				tryCount--;
 			}
-			Title.setText("시도 횟수 : " + tryCount);
+			Title.setText("남은 횟수 : " + tryCount);
 			
 			boolean isBingo = checkCard(buttonIndexSave1, buttonIndexSave2);
 			if (isBingo == true) {
@@ -321,9 +326,15 @@ public class CardGame extends GameContainer {
 					JOptionPane.showMessageDialog(CardGame.this, "수고하셨습니다.");
 				}
 			} else {
-				
+				if( tryCount == 0) {
+					xLabel.setVisible(true);
+					JOptionPane.showMessageDialog(CardGame.this, "수고하셨습니다.");
+					for (int i = 0; i < 12; i++) {
+						Btn[i].setEnabled(false);
+					}
+					
+				}
 				backToQuestion();
-				
 			}
 			
 		}
