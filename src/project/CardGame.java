@@ -19,9 +19,6 @@ import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-// 바뀐 부분
-// 33,  42, 54, 113, 136-139, 224, 237, 318 ,320, 331-337, 339-345
-
 public class CardGame extends GameContainer {
 
 	static ImageIcon backIcon = new ImageIcon("images/background.png");
@@ -33,8 +30,6 @@ public class CardGame extends GameContainer {
 	static JLabel Title; // 횟수 보여주기
 	static JLabel gameBack; // 흰색 배경
 	static JLabel back; // 초록 배경
-	static LineBorder bb = new LineBorder(Color.black, 2, true); // 상단 라벨 테두리 맞추는 용도
-	static EmptyBorder eb = new EmptyBorder(0, 0, 0, 0);
 	static JPanel cardBack; // 카드 넣는 패널
 	static JLabel startCardBack;
 	static JLabel checkLabel;
@@ -64,7 +59,7 @@ public class CardGame extends GameContainer {
 		bottomBtn01.addActionListener(this);
 
 		gamePlay();
-		mixCard();
+
 	}
 
 	// 카드 이미지 변환
@@ -98,6 +93,7 @@ public class CardGame extends GameContainer {
 		timer.start();
 	}
 
+	// 3초 카운트 다운
 	public void countDown() {
 
 		countTimer = new java.util.Timer();
@@ -136,6 +132,7 @@ public class CardGame extends GameContainer {
 		}
 	}
 
+	// 게임 패널 
 	@Override
 	public void gamePlay() {
 
@@ -154,6 +151,7 @@ public class CardGame extends GameContainer {
 		// 시작시 정지화면
 		startCardBack = new JLabel(startBackIcon);
 		startCardBack.setBounds(250, 170, 510, 450);
+		startCardBack.setVisible(true);
 
 		// 시작하기 버튼
 		bottomBtn01.setBorderPainted(false);
@@ -165,11 +163,11 @@ public class CardGame extends GameContainer {
 		cardBack = new JPanel(new GridLayout(4, 3));
 		cardBack.setBounds(251, 170, 505, 450);
 		cardBack.setBackground(Color.white);
-		
+
 		for (int i = 0; i < 12; i++) {
 			Btn[i] = new JButton();
 			Btn[i].setPreferredSize(new Dimension(100, 150));
-			Btn[i].setBorder(eb);
+			Btn[i].setBorder(null);
 			Btn[i].setBackground(Color.white);
 			Btn[i].setFocusPainted(false);
 			Btn[i].addActionListener(this);
@@ -195,7 +193,7 @@ public class CardGame extends GameContainer {
 
 		this.setLayout(null);
 		this.setBounds(0, 0, 1024, 768);
-		
+
 		back.add(bottomBtn01);
 		back.add(xLabel);
 		back.add(checkLabel);
@@ -206,6 +204,8 @@ public class CardGame extends GameContainer {
 		back.add(gameBack);
 
 		this.add(back);
+
+		mixCard();
 	}
 
 	// 그림 맞추기 실패시 카드 되돌리기
@@ -258,7 +258,7 @@ public class CardGame extends GameContainer {
 	public void actionPerformed(ActionEvent e) {
 
 		JButton btn = (JButton) e.getSource();
-		
+
 		if (pauseBtn.equals(btn)) { // 정지 버튼
 
 		} else if (bottomBtn01.equals(btn)) { // 시작하기 버튼
@@ -276,32 +276,32 @@ public class CardGame extends GameContainer {
 			showCardAll();
 
 			startCount++;
-			
+
 		} else { // 그림 버튼
-			
+
 			if (openCount == 2) {
 				return;
 			}
-			
+
 			int index = getIndex(btn);
 			System.out.println("index " + index);
 			btn.setIcon(chageImage(img[index]));
-			
+
 			openCount++;
-			
+
 			if (openCount == 1) {
 				buttonIndexSave1 = index;
-				
+
 			} else if (openCount == 2) {
 				buttonIndexSave2 = index;
-				
+
 				if (Btn[buttonIndexSave1] == Btn[buttonIndexSave2]) {
 					tryCount = tryCount;
 				} else {
 					tryCount--;
 				}
 				Title.setText("남은 횟수 : " + tryCount);
-				
+
 				boolean isBingo = checkCard(buttonIndexSave1, buttonIndexSave2);
 				if (isBingo == true) {
 					Btn[buttonIndexSave1].setEnabled(false);
@@ -324,12 +324,12 @@ public class CardGame extends GameContainer {
 						JOptionPane.showMessageDialog(CardGame.this, "수고하셨습니다.");
 						for (int i = 0; i < 12; i++) {
 							Btn[i].setEnabled(false);
-						} 
+						}
 					}
 					backToQuestion();
 				}
-			} 
-			
+			}
+
 		} // 그림 버튼 끝
 
 	} // end of actionPerformed

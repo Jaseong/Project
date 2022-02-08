@@ -141,7 +141,7 @@ public class CupGame extends GameContainer {
 		this.add(backLabel);
 	}
 
-	// 컵 내리기
+	// 시작시 컵 올리고 내리기
 	public void cupUpDown() {
 
 		timer = new Timer();
@@ -241,7 +241,7 @@ public class CupGame extends GameContainer {
 		}, 0, 50);
 	}
 
-	//
+	// 선택한 컵 이외 컵 올리기
 	public void otherCupUp(int index1, int index2) {
 		otherCupTtimer = new javax.swing.Timer(50, new ActionListener() {
 
@@ -284,15 +284,27 @@ public class CupGame extends GameContainer {
 		cups[1].road = cr.cupRoadArr[1];
 		cups[2].road = cr.cupRoadArr[2];
 
-		CupThread ct = new CupThread(cups[0], cups[1], cups[2], r, manualLabel, cups);
+		CupThread ct = new CupThread(cups, r, manualLabel);
 
 		ct.start();
+		
+		System.out.println();
 	}
 
+	// 정답라벨 및 선택 컵 라벨주기
 	public void labelBorder(boolean flag, JLabel JLabel, JButton JButton) {
 		flag = true;
 		JLabel.setVisible(flag);
 		JButton.setIcon(cupBorderIcon);
+	}
+	
+	public void restart() {
+		
+		startBtn = 0;
+		click = 0;
+		playBtn.setVisible(true);
+//		gamePlay();
+		
 	}
 
 	@Override
@@ -307,6 +319,7 @@ public class CupGame extends GameContainer {
 			cupUp(0);
 			labelBorder(flag, xLabel, cups[0]);
 			otherCupUp(1, 2);
+			restart();
 		} else if (cups[1].equals(btn)) {
 			if (click == 1) {
 				return;
@@ -314,6 +327,7 @@ public class CupGame extends GameContainer {
 			cupUp(1);
 			labelBorder(flag, checkLabel, cups[1]);
 			otherCupUp(0, 2);
+			restart();
 		} else if (cups[2].equals(btn)) {
 			if (click == 1) {
 				return;
@@ -321,16 +335,12 @@ public class CupGame extends GameContainer {
 			cupUp(2);
 			labelBorder(flag, xLabel, cups[2]);
 			otherCupUp(1, 0);
-			
+			restart();
 		} else if (playBtn.equals(btn)) {
 			if (startBtn == 1) {
 				return;
 			}
 
-			for (int i = 0; i < cups.length; i++) {
-				cups[i].setEnabled(true);
-			}
-			
 			playBtn.setVisible(false);
 			manualLabel.setVisible(false);
 			cupUpDown();
