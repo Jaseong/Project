@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class CupGame extends GameContainer {
 
@@ -60,7 +61,7 @@ public class CupGame extends GameContainer {
 
 		this.setLayout(null);
 		this.setBounds(0, 0, 1024, 768);
-
+		
 		// 설명 텍스트
 		manualLabel = new JLabel("공이 들어있는 컵을 선택하세요");
 		manualLabel.setBounds(230, 150, 550, 50);

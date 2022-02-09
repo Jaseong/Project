@@ -77,6 +77,7 @@ public class CardGame extends GameContainer {
 		countDown();
 
 		for (int i = 0; i < Btn.length; i++) {
+			Btn[i].setEnabled(true);
 			Btn[i].setIcon(chageImage(img[i]));
 		}
 
@@ -85,7 +86,10 @@ public class CardGame extends GameContainer {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < Btn.length; i++) {
+
 					Btn[i].setIcon(chageImage("leaf.png"));
+					Btn[i].addActionListener(CardGame.this);
+
 				}
 				timer.stop();
 			}
@@ -132,7 +136,7 @@ public class CardGame extends GameContainer {
 		}
 	}
 
-	// 게임 패널 
+	// 게임 패널
 	@Override
 	public void gamePlay() {
 
@@ -170,7 +174,7 @@ public class CardGame extends GameContainer {
 			Btn[i].setBorder(null);
 			Btn[i].setBackground(Color.white);
 			Btn[i].setFocusPainted(false);
-			Btn[i].addActionListener(this);
+//			Btn[i].addActionListener(this);
 			Btn[i].setIcon(chageImage("leaf.png"));
 			Btn[i].setEnabled(false);
 			cardBack.add(Btn[i]);
@@ -269,10 +273,6 @@ public class CardGame extends GameContainer {
 
 			startCardBack.setVisible(false);
 
-			for (int i = 0; i < Btn.length; i++) {
-				Btn[i].setEnabled(true);
-			}
-
 			showCardAll();
 
 			startCount++;
@@ -296,7 +296,7 @@ public class CardGame extends GameContainer {
 				buttonIndexSave2 = index;
 
 				if (Btn[buttonIndexSave1] == Btn[buttonIndexSave2]) {
-					tryCount = tryCount;
+
 				} else {
 					tryCount--;
 				}
